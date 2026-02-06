@@ -1,0 +1,125 @@
+birthday/
+│── index.html
+│── humnava.mp3   (Arijit ka song yahan rakho)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Dr. Mehak Durrani 🎂</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+    text-align:center;
+}
+
+.card{
+    background:rgba(255,255,255,0.25);
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    z-index:2;
+}
+
+h1{font-size:3rem;margin:0;}
+h2{font-weight:300;margin-top:10px;}
+
+button{
+    padding:12px 25px;
+    margin:10px;
+    border:none;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+    background:#ff4b5c;
+    color:white;
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<div class="card">
+    <h1>🎉 Happy Birthday 🎉</h1>
+    <h2>Dr. Mehak Durrani 💖</h2>
+    <p>
+        Dua hai aapki zindagi hamesha<br>
+        khushiyon, kamiyabi aur muskurahat se bhari rahe ✨
+    </p>
+
+    <audio id="song" src="humnava.mp3"></audio>
+
+    <button onclick="playSong()">🎶 Play Humnava</button><br>
+
+    <a href="https://wa.me/?text=Happy%20Birthday%20Dr.%20Mehak%20Durrani%20🎂🎉%20Allah%20aapki%20zindagi%20hamesha%20khushiyon%20se%20bhar%20de%20💖"
+       target="_blank">
+        <button>📱 Share on WhatsApp</button>
+    </a>
+</div>
+
+<script>
+function playSong(){
+    document.getElementById("song").play();
+}
+
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let particles=[];
+
+function random(min,max){
+    return Math.random()*(max-min)+min;
+}
+
+function firework(){
+    let x=random(0,canvas.width);
+    let y=random(0,canvas.height/2);
+    for(let i=0;i<50;i++){
+        particles.push({
+            x,y,
+            vx:random(-3,3),
+            vy:random(-3,3),
+            life:100,
+            color:`hsl(${Math.random()*360},100%,60%)`
+        });
+    }
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach((p,i)=>{
+        p.x+=p.vx;
+        p.y+=p.vy;
+        p.life--;
+        ctx.fillStyle=p.color;
+        ctx.fillRect(p.x,p.y,3,3);
+        if(p.life<=0) particles.splice(i,1);
+    });
+    requestAnimationFrame(animate);
+}
+
+setInterval(firework,800);
+animate();
+</script>
+
+</body>
+</html>
