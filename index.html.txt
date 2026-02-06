@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Dr. Mehak Durrani 🎂</title>
+<style>
+body{
+ margin:0;
+ overflow:hidden;
+ background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+ font-family:Segoe UI,sans-serif;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ height:100vh;
+ color:white;
+ text-align:center;
+}
+#tapScreen{
+ position:absolute;
+ top:0;left:0;
+ width:100%;height:100%;
+ background:rgba(0,0,0,0.7);
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ flex-direction:column;
+ z-index:3;
+ cursor:pointer;
+}
+#tapScreen h1{
+ font-size:2em;
+ animation: pulse 1s infinite;
+}
+@keyframes pulse{
+ 0%,100%{transform:scale(1);}
+ 50%{transform:scale(1.1);}
+}
+.card{
+ background:rgba(255,255,255,0.25);
+ padding:35px;
+ border-radius:20px;
+ box-shadow:0 10px 30px rgba(0,0,0,0.3);
+ z-index:2;
+ display:none;
+}
+canvas{position:fixed;top:0;left:0;z-index:1;}
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<div id="tapScreen">
+<h1>🎁 Tap to see your surprise 🎁</h1>
+<p>Dr. Mehak Durrani ke liye special!</p>
+</div>
+
+<div class="card" id="wishCard">
+<h1>🎉 Happy Birthday 🎉</h1>
+<h2>Dr. Mehak Durrani 💖</h2>
+<p>
+Allah kare aapki zindagi hamesha  
+khushiyon, sehat aur kamiyabi se bhari rahe ✨
+</p>
+</div>
+
+<script>
+// Fireworks setup
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+
+let particles = [];
+function random(min,max){return Math.random()*(max-min)+min;}
+function createFirework(){
+  const x = random(0,canvas.width);
+  const y = random(0,canvas.height/2);
+  const colors = ['#ff4b5c','#ffb86c','#6a67ce','#4cd137','#00a8ff','#fbc531'];
+  for(let i=0;i<60;i++){
+    particles.push({x,y,vx:random(-4,4),vy:random(-4,4),life:120,color:colors[Math.floor(random(0,colors.length))]});
+  }
+}
+function animate(){
+  ctx.fillStyle='rgba(0,0,0,0.2)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.x+=p.vx; p.y+=p.vy; p.life--;
+    ctx.fillStyle=p.color;
+    ctx.beginPath(); ctx.arc(p.x,p.y,3,0,Math.PI*2); ctx.fill();
+    if(p.life<=0) particles.splice(i,1);
+  });
+  requestAnimationFrame(animate);
+}
+setInterval(createFirework,600);
+animate();
+
+// Tap to reveal
+const tapScreen = document.getElementById('tapScreen');
+const wishCard = document.getElementById('wishCard');
+tapScreen.addEventListener('click',()=>{
+  tapScreen.style.display='none';
+  wishCard.style.display='block';
+});
+</script>
+
+</body>
+</html>
